@@ -8,6 +8,7 @@
 
 import React from 'react';
 import contact from './contact'
+import Row from './Row'
 import {
   SafeAreaView,
   StyleSheet,
@@ -18,29 +19,35 @@ import {
   Button,
 } from 'react-native';
 
+
 class App extends React.Component{
 
   state = {
-    toggle: false,
+    toggle: true,
   }
 
-  toggleButton = ()  => {
-    console.log(this.state.toggle)
-    this.setState(prevState => ({toggle: !prevState.toggle,}));
-  }
+  toggleButton = ()  => (
+    // console.log(this.state.toggle);
+    this.setState({
+      toggle: !this.state.toggle,
+    })
+  )
+  
   render(){
+    console.log(this.state.toggle)
     return (
       <>
       <View style={styles.container}>
-        <Button style={styles.button} title="Toggle Contact" onPress={() => this.toggleButton} />
-        <ScrollView>
-          {contact.map(contact => (
-            <View>
-              <Text key={contact.key}>{contact.name}</Text>
-              <Text>{contact.phone}</Text>
-            </View>
-          ))}
-        </ScrollView>
+        <Button style={styles.button} title="Toggle Contact" onPress={this.toggleButton} />
+          { this.state.toggle && 
+          (
+            <ScrollView>
+              {contact.map(contact => (
+                <Row key={contact.key} {...contact} />
+              ))}
+            </ScrollView>
+          )
+          } 
       </View>
       </>
     );
