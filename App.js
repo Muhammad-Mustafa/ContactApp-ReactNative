@@ -12,6 +12,7 @@ import Row from './Row'
 import {
   SafeAreaView,
   StyleSheet,
+  FlatList,
   ScrollView,
   View,
   Text,
@@ -32,7 +33,7 @@ class App extends React.Component{
       toggle: !this.state.toggle,
     })
   )
-  
+  // renderItem = obj => <Row {...obj.item}  />
   render(){
     console.log(this.state.toggle)
     return (
@@ -40,12 +41,22 @@ class App extends React.Component{
       <View style={styles.container}>
         <Button style={styles.button} title="Toggle Contact" onPress={this.toggleButton} />
           { this.state.toggle && 
-          (
-            <ScrollView>
-              {contact.map(contact => (
-                <Row key={contact.key} {...contact} />
-              ))}
-            </ScrollView>
+          ( 
+            //Implementation of the FlatList
+            <FlatList 
+              renderItem = {obj => <Row {...obj.item}  /> }
+              data={contact}
+              keyExtractor={contact.key}
+            />
+            
+
+
+            //Implementation of the scrollView 
+            // <ScrollView>
+            //   {contact.map(contact => (
+            //     <Row key={contact.key} {...contact} />
+            //   ))}
+            // </ScrollView>
           )
           } 
       </View>
