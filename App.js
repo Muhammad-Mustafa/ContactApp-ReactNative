@@ -7,12 +7,12 @@
  */
 
 import React from 'react';
-import contact from './contact'
+import contact, {compareNames} from './contact'
 import Row from './Row'
 import {
   SafeAreaView,
   StyleSheet,
-  FlatList,
+  SectionList,
   ScrollView,
   View,
   Text,
@@ -20,44 +20,50 @@ import {
   Button,
 } from 'react-native';
 
+import ContactList from './ContactList'
+
 
 class App extends React.Component{
 
   state = {
     toggle: true,
+    contacts: contact,
   }
 
   toggleButton = ()  => (
-    // console.log(this.state.toggle);
     this.setState({
       toggle: !this.state.toggle,
     })
   )
-  // renderItem = obj => <Row {...obj.item}  />
+
+  sort = () => (
+    this.setState(prevState => ({contacts: [...prevState.contacts].sort(compareNames)}))
+  )
+
   render(){
-    console.log(this.state.toggle)
+
     return (
       <>
       <View style={styles.container}>
-        <Button style={styles.button} title="Toggle Contact" onPress={this.toggleButton} />
-          { this.state.toggle && 
+        <View style={styles.buttons}>
+          <Button title="Toggle Contact" onPress={this.toggleButton} />
+        </View>
+        <View style={styles.buttons}>
+          <Button title="Sort Contact" onPress={this.sort} />
+        </View>
+          { this.state.toggle ? 
           ( 
             //Implementation of the FlatList
-            <FlatList 
-              renderItem = {obj => <Row {...obj.item}  /> }
-              data={contact}
-              keyExtractor={contact.key}
+            <ContactList
+              // renderItems={this.renderItems}
+              // renderSectionHeader={this.renderSectionHeader}
+              contacts={this.state.contacts} 
             />
-            
-
-
-            //Implementation of the scrollView 
-            // <ScrollView>
-            //   {contact.map(contact => (
-            //     <Row key={contact.key} {...contact} />
-            //   ))}
-            // </ScrollView>
-          )
+            ) : (
+              <View style={styles.text}>
+                <Text> No Contacts to Show Right Now </Text>
+              </View>
+            )
           } 
       </View>
       </>
@@ -70,8 +76,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
-  button:{
-    width: 2,
+  buttons:{
+    padding: 6,
+  },
+  text:{
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 export default App;
