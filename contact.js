@@ -14,7 +14,7 @@ const generateName = () => `${firstNames[rand(firstNames.length - 1)]} ${lastNam
 const generatePhoneNumber = () => `${rand(999, 100)}-${rand(999, 100)}-${rand(9999, 1000)}`
 
 // create a person
-const createContact = () => ({name: generateName(), phone: generatePhoneNumber()})
+ const createContact = () => ({name: generateName(), phone: generatePhoneNumber()})
 
 // compare two contacts for alphabetizing
 export const compareNames = (contact1, contact2) => contact1.name > contact2.name

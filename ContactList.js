@@ -15,7 +15,6 @@ import contact from './contact'
   
   const renderItems = ({item}) => <Row {...item}  />
   const renderSectionHeader = ({section}) => <Text>{section.title}</Text>
-  
 
   const ContactList = props => {
     const contactsByLetter = props.contacts.reduce((obj, contact) => {
@@ -30,6 +29,7 @@ import contact from './contact'
       data: contactsByLetter[letter],
       title: letter,
     }))
+    
     return(
         <SectionList 
             renderItem = {renderItems} 

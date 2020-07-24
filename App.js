@@ -7,8 +7,9 @@
  */
 
 import React from 'react';
-import contact, {compareNames} from './contact'
-import Row from './Row'
+import contact, {compareNames} from './contact';
+import Row from './Row';
+import AddContact from './AddContact';
 import {
   SafeAreaView,
   StyleSheet,
@@ -20,66 +21,72 @@ import {
   Button,
 } from 'react-native';
 
-import ContactList from './ContactList'
+import ContactList from './ContactList';
 
 
-class App extends React.Component{
+
+class App extends React.Component {
 
   state = {
     toggle: true,
     contacts: contact,
+  };
+
+  addContact = newContact => {
+    this.setState(preveState => ({
+      contacts: [...preveState.contacts, newContact]
+    }))
   }
 
-  toggleButton = ()  => (
+  toggleButton = () =>
     this.setState({
       toggle: !this.state.toggle,
-    })
-  )
+    });
 
-  sort = () => (
-    this.setState(prevState => ({contacts: [...prevState.contacts].sort(compareNames)}))
-  )
+  sort = () =>
+    this.setState((prevState) => ({
+      contacts: [...prevState.contacts].sort(compareNames),
+    }));
 
-  render(){
+  render() {
 
     return (
       <>
-      <View style={styles.container}>
-        <View style={styles.buttons}>
-          <Button title="Toggle Contact" onPress={this.toggleButton} />
-        </View>
-        <View style={styles.buttons}>
-          <Button title="Sort Contact" onPress={this.sort} />
-        </View>
-          { this.state.toggle ? 
-          ( 
-            //Implementation of the FlatList
-            <ContactList
-              // renderItems={this.renderItems}
-              // renderSectionHeader={this.renderSectionHeader}
-              contacts={this.state.contacts} 
-            />
-            ) : (
-              <View style={styles.text}>
-                <Text> No Contacts to Show Right Now </Text>
+        <View style={styles.container}>
+          {this.state.toggle ? (
+            <View>
+              <View style={styles.buttons}>
+                <Button title="Add Contact" onPress={this.toggleButton} />
               </View>
-            )
-          } 
-      </View>
+              <View style={styles.buttons}>
+                <Button title="Sort Contact" onPress={this.sort} />
+              </View>
+              <ContactList
+                // renderItems={this.renderItems}
+                // renderSectionHeader={this.renderSectionHeader}
+                contacts={this.state.contacts}
+              />
+            </View>
+          ) : (
+            <View >
+              <AddContact toggleButton= {this.toggleButton} onSubmit={this.addContact} />
+            </View>
+          )}
+        </View>
       </>
     );
   }
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
   },
-  buttons:{
+  buttons: {
     padding: 6,
   },
-  text:{
+  text: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
